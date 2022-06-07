@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "cashbox-352602",
+  "private_key_id": "8a1aa6a003d7c64cdfd1efc7f3eb1f95f094e713",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCUH4QjPzV6YQ7p\nD61cIh0ACrtzBOeoaBBex+yXBbgTIFQ6vB3XUWBF7S35NBQwG7oCI4QiFawANQyR\nBz+Z4DuwEUYfHbyamxoAoox1muUgkaeWsyys5LSnVNPYl+Syt+uwCKze7/5Rg3UD\n+EykmnLepdttDyOEh1Pb0xANzavBfnVtFtsMQiyOssRZlO5N33rnTwWaY7yTqAww\njAUaDOJMhrzR1c8baEDyI4oUVFAS28RZcczmkWGOVDugpe79WOXrL6ccfVWMCm+K\n4z2h9UnTsfzR1jBx30iXcG7BvNGJRYXtQ6LHKPUL8TRmwiM5b/1tH99x83slVuVG\n/eN6SgdVAgMBAAECggEAIr3CnQ7AAQhfOigwacXhhec+gHNzzzK7NjPPiLtxaWEB\niHYjTKN8QGJpEERYANGb/tDsNp9dJH5MyH5J+1IVxc3DY9xyZlO/FUuKxLG0EH/B\nLi4vqgyJV57kgi5cGFPdfoAGZdKl1GIQEcKM3WWRUCnYDZwJoVWpREucfhRRdtQS\nJIyQ+xF7vfWq2sr+fii0g61FB01+jw3lIIGkC05U3DLMuTlF4R+IJTF9Mf9MZ0tT\nf0aFnxmo8HM1YgMb0AmpopfuaHdwhwClXlneK4xGRauIgjolelKldk6n3OoR3jnw\nlPD6fsaLYMx1T4S7zfLlRC8lrqYeeh1vU+yifLaUGQKBgQDF2+cchQLr9+UuUPQY\nCA1+vbrU1SbkCDFo9wIwTqw0l3skIej1sJDSOV9qwBOhj05tWe+b6MFQS1Hf5Rte\nyWZdfW3hOfFZ06oFLcW66aYP/hKQB190ji/4JctHddxzpB8vvDjLJ05E9cp+XON4\neT/fpzEt4R2u1ArjRpB4eLt6qQKBgQC/pjFQPXwrT02DG0eVycqHfMJQ2IPM5fkQ\nZX0/eKtiMPGM1lBVQe5qVW2kST+SWHAtWyZCqwsvm8iMnjvT+uGa3XlXucVYdRoo\nFlrWEIIf/eeiwV4tfGInS7EZqd32vaCzRF1csHy7tsYXsDFtDi1wjpqA2tajFvZB\nQfewZCEezQKBgQCyIfApugrOXUmlcFbCiAV2VOSvFxRDeqjZYoFC8qGRW8wO1MTC\n5esMiYDBQBqserPWOYFCscPRQW5+D+ubY+FYTEOv4ZXMFIde0D3TsOXEQi9+IlUr\nP5QqagRg2tjV+C3nsSLErCeIaG2dZI2a+jaqagEZ2DH8I4WF5xLMk43euQKBgBxc\n2SF55/104BDOIbr+QTXp9cwHLwJM6p5Nlsqk7iA7BBSGxx7HAiTEfdR5bqoW4osj\n2Ta2n5ItKPH+nPYTQ/4qVsHv4U/lDLjwDgNuMAPSDMzedzSeGtyb7BrTM+FHURgW\nvwZvrBYPx6NL1RTBq2HkCOOW/3rldA5WV/TH7MrlAoGAXVv7mdjEWgYfmNvMRb72\nW03IaXy0bJEfr2Jks/2qXCDrSNsODDCilB9Ms+HoSK0OIKuUk3ucEX9jfDil0aRy\n03tr6+OpLd/6/176ss67xyn8XGLCNvRcqHhLndyTAxUk7tbZ4nntZywun8uKN1uN\nfPdotaQcbyGLWW1RmESQsRs=\n-----END PRIVATE KEY-----\n",
+  "client_email": "cashbox-tg@cashbox-352602.iam.gserviceaccount.com",
+  "client_id": "108483037351957825214",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cashbox-tg%40cashbox-352602.iam.gserviceaccount.com"
+}

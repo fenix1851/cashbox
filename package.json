@@ -10,7 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "-": "^0.0.1",
+    "@types/google-spreadsheet": "^3.2.2",
     "dotenv": "^16.0.1",
+    "google-spreadsheet": "^3.3.0",
+    "google-spreadsheets": "^1.0.0",
+    "googleapis": "^100.0.0",
+    "luxon": "^2.4.0",
+    "mongodb": "^4.7.0",
     "telegraf": "^4.8.3",
     "telegraf-session-local": "^2.1.0"
   }
