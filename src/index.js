@@ -3,7 +3,10 @@ require("dotenv").config();
 const { BOT_TOKEN } = process.env;
 
 const { Telegraf } = require("telegraf");
-const addNewRow = require("./scripts/gSheets");
+const {addNewRow} = require("./scripts/gSheets");
+const { deleteRow } = require("./scripts/gSheets");
+
+//const {deleteRow} = require('./scripts/gSheets')
 
 const { MongoClient } = require("mongodb");
 // or as an es module:
@@ -18,37 +21,81 @@ const dbName = "cashbox";
 
 // Initialize the sheet - doc ID is the long id in the sheets URL
 
-
+const firstChatId = -1001768035281
+const secondChatId = -1001632116836
 
 
 const recognizeAndAdd = async (number, dateWithZeros, ctx, collection) => {
+  let tableIndex = 2;
+  if (ctx.message.chat.id) {
+    //console.log(ctx.message.chat.id);
+    switch (ctx.message.chat.id) {
+      case firstChatId:
+        tableIndex = 0;
+        break
+      case secondChatId:
+        tableIndex = 1;
+    }
+  }
   if (number[0] == number.match(/[0-9|+]/)) {
     if (number[0] == "+") number = number.slice(1);
     console.log();
-    
-    await addNewRow(dateWithZeros, number, 1,ctx,collection);
+    await addNewRow(tableIndex,dateWithZeros, number, 1,ctx,collection);
   } else {
     if (number[0] == "-") number = number.slice(1);
-    //await addNewRow(dateWithZeros, number, 0);
+    await addNewRow(tableIndex, dateWithZeros, number, 0, ctx, collection);
   }
+};
+
+const update = async (db, ctx, firstChatId, secondChatId) => {
+  const collections = await db.collections();
+  //console.log(typeof collections)
+  for (const coll of collections) {
+    const colname = coll.namespace.split(".")[1];
+    const collection = db.collection(colname);
+    const elements = await collection.find().toArray();
+    //console.log(data)
+    for (const elem of elements) {
+      // console.log("-------------------");
+      // console.log(elem);
+      try {
+        await ctx.telegram.copyMessage("290561482", colname, elem.messageId);
+      } catch (e) {
+        if (e.message == "400: Bad Request: message to copy not found")
+          console.log(elem._id);
+          console.log(colname == secondChatId)
+          if(colname == firstChatId){
+            console.log("first delete");
+            await deleteRow(0, elem.row, db, colname, elem._id);
+          }
+          else if(colname == secondChatId){
+            console.log("second delete");
+            await deleteRow(1, elem.row, db, colname, elem._id);
+          }
+          else{
+            console.log('dont find such table')
+          }
+      }
+    }
+  }
+  //console.log(ctx.message.message_id);
 };
 
 const init = async (bot) => {
   await client.connect();
   console.log("Connected successfully to server");
   const db = client.db(dbName);
-
   bot.start((ctx) => {
     console.log("1");
   });
+
+  bot.command('update', (ctx)=>{
+    update(db, ctx, firstChatId, secondChatId)
+  })
+
   bot.on("message", async (ctx) => {
-    //console.log(ctx.message.message_id);
-    // try {
-    //   await ctx.telegram.copyMessage("290561482", "-1001768035281", 473);
-    // } catch (e) {
-    //   if (e.message == "400: Bad Request: message to copy not found")
-    //     console.log(123);
-    // }
+    
+
     if (ctx.message.text) {
       let text = ctx.message.text;
 
