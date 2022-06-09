@@ -1,9 +1,17 @@
+process
+  .on("unhandledRejection", (reason, p) => {
+    console.log(`Unhandled Rejection at Promise: ${reason}`);
+  })
+  .on("uncaughtException", (err) => {
+    console.log(`Uncaught Exception thrown: ${err}`);
+  });
+
 require("dotenv").config();
 
 const { BOT_TOKEN } = process.env;
 
 const { Telegraf } = require("telegraf");
-const {addNewRow} = require("./scripts/gSheets");
+const { addNewRow } = require("./scripts/gSheets");
 const { deleteRow } = require("./scripts/gSheets");
 
 //const {deleteRow} = require('./scripts/gSheets')
@@ -20,19 +28,17 @@ const client = new MongoClient(url);
 const dbName = "cashbox";
 
 // Initialize the sheet - doc ID is the long id in the sheets URL
-
-const firstChatId = -1001768035281
-const secondChatId = -1001632116836
-
+const { firstChatId } = process.env;
+const { secondChatId } = process.env;
 
 const recognizeAndAdd = async (number, dateWithZeros, ctx, collection) => {
   let tableIndex = 2;
   if (ctx.message.chat.id) {
     //console.log(ctx.message.chat.id);
-    switch (ctx.message.chat.id) {
+    switch (ctx.message.chat.id.toString()) {
       case firstChatId:
         tableIndex = 0;
-        break
+        break;
       case secondChatId:
         tableIndex = 1;
     }
@@ -40,7 +46,7 @@ const recognizeAndAdd = async (number, dateWithZeros, ctx, collection) => {
   if (number[0] == number.match(/[0-9|+]/)) {
     if (number[0] == "+") number = number.slice(1);
     console.log();
-    await addNewRow(tableIndex,dateWithZeros, number, 1,ctx,collection);
+    await addNewRow(tableIndex, dateWithZeros, number, 1, ctx, collection);
   } else {
     if (number[0] == "-") number = number.slice(1);
     await addNewRow(tableIndex, dateWithZeros, number, 0, ctx, collection);
@@ -63,18 +69,16 @@ const update = async (db, ctx, firstChatId, secondChatId) => {
       } catch (e) {
         if (e.message == "400: Bad Request: message to copy not found")
           console.log(elem._id);
-          console.log(colname == secondChatId)
-          if(colname == firstChatId){
-            console.log("first delete");
-            await deleteRow(0, elem.row, db, colname, elem._id);
-          }
-          else if(colname == secondChatId){
-            console.log("second delete");
-            await deleteRow(1, elem.row, db, colname, elem._id);
-          }
-          else{
-            console.log('dont find such table')
-          }
+        console.log(colname == secondChatId);
+        if (colname == firstChatId) {
+          console.log("first delete");
+          await deleteRow(0, elem.row, db, colname, elem._id);
+        } else if (colname == secondChatId) {
+          console.log("second delete");
+          await deleteRow(1, elem.row, db, colname, elem._id);
+        } else {
+          console.log("dont find such table");
+        }
       }
     }
   }
@@ -86,16 +90,14 @@ const init = async (bot) => {
   console.log("Connected successfully to server");
   const db = client.db(dbName);
   bot.start((ctx) => {
-    console.log("1");
+    console.log(ctx.chat)
   });
 
-  bot.command('update', (ctx)=>{
-    update(db, ctx, firstChatId, secondChatId)
-  })
+  bot.command("update", (ctx) => {
+    update(db, ctx, firstChatId, secondChatId);
+  });
 
   bot.on("message", async (ctx) => {
-    
-
     if (ctx.message.text) {
       let text = ctx.message.text;
 

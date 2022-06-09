@@ -2,11 +2,13 @@ require('dotenv').config();
 
 const {GOOGLE_TOKEN} = process.env
 const {GOOGLE_SERVICE_ACCOUNT_EMAIL} = process.env
+const {TABLE_ID} = process.env
+
 
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 const doc = new GoogleSpreadsheet(
-  "1ArZJjg6vKKxASmfEW5mEp4Fm50JEWZUcSdihTWjHJPU"
+  TABLE_ID
 );
 
 const addNewRow = async (tableIndex, date, summ, sign,ctx, collection) => {
