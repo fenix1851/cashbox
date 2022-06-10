@@ -31,7 +31,7 @@ const dbName = "cashbox";
 const { firstChatId } = process.env;
 const { secondChatId } = process.env;
 
-const recognizeAndAdd = async (number, dateWithZeros, ctx, collection) => {
+const recognizeAndAdd = async (number, dateWithZeros, ctx, collection, comment) => {
   let tableIndex = 2;
   if (ctx.message.chat.id) {
     //console.log(ctx.message.chat.id);
@@ -45,11 +45,10 @@ const recognizeAndAdd = async (number, dateWithZeros, ctx, collection) => {
   }
   if (number[0] == number.match(/[0-9|+]/)) {
     if (number[0] == "+") number = number.slice(1);
-    console.log();
-    await addNewRow(tableIndex, dateWithZeros, number, 1, ctx, collection);
+    await addNewRow(tableIndex, dateWithZeros, number, 1, ctx, collection, comment);
   } else {
     if (number[0] == "-") number = number.slice(1);
-    await addNewRow(tableIndex, dateWithZeros, number, 0, ctx, collection);
+    await addNewRow(tableIndex, dateWithZeros, number, 0, ctx, collection, comment);
   }
 };
 
@@ -58,6 +57,9 @@ const update = async (db, ctx, firstChatId, secondChatId) => {
   //console.log(typeof collections)
   for (const coll of collections) {
     const colname = coll.namespace.split(".")[1];
+    console.log(
+      `colname: ${typeof colname} chatId1: ${typeof firstChatId} chatId2: ${typeof secondChatId}`
+    );
     const collection = db.collection(colname);
     const elements = await collection.find().toArray();
     //console.log(data)
@@ -105,8 +107,54 @@ const init = async (bot) => {
       textArr = text.split(/\n/);
       for (let text of textArr) {
         if (text[0].match(/[0-9|+|-]/g) !== null) {
+          //console.log(text);
+          //console.log(text.split(' '))
+          var bufferText = text
+          var ifSpace = false
+          if(text[1] == ' '){
+            ifSpace = true
+          }
+          //console.log(ifSpace)
+          var numberWithSpaces = text.match(/[1-9|+|-][0-9|\s]{1,}/).toString()
+          numberWithSpaces = numberWithSpaces.slice(0, numberWithSpaces.length-1)
+          //console.log(numberWithSpaces)
+          //console.log(numberWithSpaces)
+          // console.log(ifSpace)
           text = text.replace(/\s/g, "");
+          //console.log(text)
           var number = text.match(/[1-9|+|-][0-9]{0,}/g)[0].toString();
+          var comment = ''
+          var bufferNumber = number
+          if(numberWithSpaces != number){
+            bufferText = bufferText.replace(numberWithSpaces, number)
+            //console.log(bufferText)
+          }
+          const splittedText = bufferText.split(" ");
+          if(ifSpace){
+            //console.log(number[0]=="-")
+            if (number[0] == "-" || number[0] == "+") {
+              bufferNumber = number.slice(1);
+            }
+          }
+          for(let i = splittedText.length;i--;i!=0){
+            //console.log(splittedText[0])
+            // console.log(splittedText[i]);
+            // console.log(bufferNumber);
+            if(splittedText[i] == bufferNumber || splittedText[i].slice(1)==bufferNumber){
+              
+              break
+            }
+            //console.log(splittedText[i]);
+            comment = comment +' '+   splittedText[i]
+          }
+          comment = comment.split(' ')
+          comment = comment.reverse()
+          let buffer = ''
+          comment.forEach(element => {
+            buffer = buffer + ' ' + element
+          });
+          comment = buffer.slice(1)
+          console.log(comment)
           const messageDate = new Date(ctx.message.date * 1000);
           //console.log(ctx.message.chat.id);
           const collection = db.collection(ctx.message.chat.id.toString());
@@ -115,7 +163,7 @@ const init = async (bot) => {
             ("0" + messageDate.getDate()).slice(-2) +
             "." +
             ("0" + (messageDate.getMonth() + 1)).slice(-2);
-          recognizeAndAdd(number, dateWithZeros, ctx, collection);
+          await recognizeAndAdd(number, dateWithZeros, ctx, collection, comment);
         }
       }
     }
