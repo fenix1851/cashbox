@@ -100,8 +100,16 @@ const init = async (bot) => {
   });
 
   bot.on("message", async (ctx) => {
-    if (ctx.message.text) {
-      let text = ctx.message.text;
+    //console.log(ctx.message.caption)
+    if (ctx.message.text || ctx.message.caption) {
+      if(ctx.message.caption){
+        console.log(ctx.message.caption);
+        var text = ctx.message.caption;
+      }
+      else if(ctx.message.text){
+        console.log(ctx.message.text);
+        var text = ctx.message.text;
+      }
 
       //console.log(text.split(/\n/));
       textArr = text.split(/\n/);
@@ -109,52 +117,57 @@ const init = async (bot) => {
         if (text[0].match(/[0-9|+|-]/g) !== null) {
           //console.log(text);
           //console.log(text.split(' '))
-          var bufferText = text
-          var ifSpace = false
-          if(text[1] == ' '){
-            ifSpace = true
+          var bufferText = text;
+          var ifSpace = false;
+          if (text[1] == " ") {
+            ifSpace = true;
           }
           //console.log(ifSpace)
-          var numberWithSpaces = text.match(/[1-9|+|-][0-9|\s]{1,}/).toString()
-          numberWithSpaces = numberWithSpaces.slice(0, numberWithSpaces.length-1)
+          var numberWithSpaces = text.match(/[1-9|+|-][0-9|\s]{1,}/).toString();
+          numberWithSpaces = numberWithSpaces.slice(
+            0,
+            numberWithSpaces.length - 1
+          );
           //console.log(numberWithSpaces)
           //console.log(numberWithSpaces)
           // console.log(ifSpace)
           text = text.replace(/\s/g, "");
           //console.log(text)
           var number = text.match(/[1-9|+|-][0-9]{0,}/g)[0].toString();
-          var comment = ''
-          var bufferNumber = number
-          if(numberWithSpaces != number){
-            bufferText = bufferText.replace(numberWithSpaces, number)
+          var comment = "";
+          var bufferNumber = number;
+          if (numberWithSpaces != number) {
+            bufferText = bufferText.replace(numberWithSpaces, number);
             //console.log(bufferText)
           }
           const splittedText = bufferText.split(" ");
-          if(ifSpace){
+          if (ifSpace) {
             //console.log(number[0]=="-")
             if (number[0] == "-" || number[0] == "+") {
               bufferNumber = number.slice(1);
             }
           }
-          for(let i = splittedText.length;i--;i!=0){
+          for (let i = splittedText.length; i--; i != 0) {
             //console.log(splittedText[0])
             // console.log(splittedText[i]);
             // console.log(bufferNumber);
-            if(splittedText[i] == bufferNumber || splittedText[i].slice(1)==bufferNumber){
-              
-              break
+            if (
+              splittedText[i] == bufferNumber ||
+              splittedText[i].slice(1) == bufferNumber
+            ) {
+              break;
             }
             //console.log(splittedText[i]);
-            comment = comment +' '+   splittedText[i]
+            comment = comment + " " + splittedText[i];
           }
-          comment = comment.split(' ')
-          comment = comment.reverse()
-          let buffer = ''
-          comment.forEach(element => {
-            buffer = buffer + ' ' + element
+          comment = comment.split(" ");
+          comment = comment.reverse();
+          let buffer = "";
+          comment.forEach((element) => {
+            buffer = buffer + " " + element;
           });
-          comment = buffer.slice(1)
-          console.log(comment)
+          comment = buffer.slice(1);
+          console.log(comment);
           const messageDate = new Date(ctx.message.date * 1000);
           //console.log(ctx.message.chat.id);
           const collection = db.collection(ctx.message.chat.id.toString());
@@ -163,7 +176,13 @@ const init = async (bot) => {
             ("0" + messageDate.getDate()).slice(-2) +
             "." +
             ("0" + (messageDate.getMonth() + 1)).slice(-2);
-          await recognizeAndAdd(number, dateWithZeros, ctx, collection, comment);
+          await recognizeAndAdd(
+            number,
+            dateWithZeros,
+            ctx,
+            collection,
+            comment
+          );
         }
       }
     }

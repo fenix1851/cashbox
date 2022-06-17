@@ -33,6 +33,7 @@ const addNewRow = async (tableIndex, date, summ, sign,ctx, collection, comment) 
           row: rowNumber,
           comment: comment
         });
+        ctx.reply('Приход '+summ+' зафиксирован')
     }
     else{
         await sheet.addRow({ Дата: date, Расход: summ, Комментарии: comment });
@@ -44,6 +45,7 @@ const addNewRow = async (tableIndex, date, summ, sign,ctx, collection, comment) 
           number: summ,
           row: rowNumber,
         });
+        ctx.reply("Расход " + summ + " зафиксирован");
     }
 }
 
