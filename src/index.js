@@ -45,10 +45,10 @@ const recognizeAndAdd = async (number, dateWithZeros, ctx, collection, comment) 
   }
   if (number[0] == number.match(/[0-9|+]/)) {
     if (number[0] == "+") number = number.slice(1);
-    await addNewRow(tableIndex, dateWithZeros, number, 1, ctx, collection, comment);
+    // await addNewRow(tableIndex, dateWithZeros, number, 1, ctx, collection, comment);
   } else {
     if (number[0] == "-") number = number.slice(1);
-    await addNewRow(tableIndex, dateWithZeros, number, 0, ctx, collection, comment);
+    // await addNewRow(tableIndex, dateWithZeros, number, 0, ctx, collection, comment);
   }
 };
 
@@ -137,7 +137,12 @@ const init = async (bot) => {
           var comment = "";
           var bufferNumber = number;
           if (numberWithSpaces != number) {
-            bufferText = bufferText.replace(numberWithSpaces, number);
+            console.log("bufferText1: " + bufferText);
+            if(numberWithSpaces == number){
+              console.log(true)
+              bufferText = bufferText.replace(numberWithSpaces, number);
+            }
+
             //console.log(bufferText)
           }
           const splittedText = bufferText.split(" ");
@@ -159,6 +164,9 @@ const init = async (bot) => {
             }
             //console.log(splittedText[i]);
             comment = comment + " " + splittedText[i];
+            if(splittedText[i] != number){
+              console.log('number:'+number);
+            }
           }
           comment = comment.split(" ");
           comment = comment.reverse();
@@ -167,7 +175,6 @@ const init = async (bot) => {
             buffer = buffer + " " + element;
           });
           comment = buffer.slice(1);
-          console.log(comment);
           const messageDate = new Date(ctx.message.date * 1000);
           //console.log(ctx.message.chat.id);
           const collection = db.collection(ctx.message.chat.id.toString());
@@ -176,6 +183,8 @@ const init = async (bot) => {
             ("0" + messageDate.getDate()).slice(-2) +
             "." +
             ("0" + (messageDate.getMonth() + 1)).slice(-2);
+          console.log(`final number: ${number}`)
+          console.log(`final comment: ${comment}`);
           await recognizeAndAdd(
             number,
             dateWithZeros,
