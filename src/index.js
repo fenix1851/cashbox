@@ -45,10 +45,10 @@ const recognizeAndAdd = async (number, dateWithZeros, ctx, collection, comment) 
   }
   if (number[0] == number.match(/[0-9|+]/)) {
     if (number[0] == "+") number = number.slice(1);
-    // await addNewRow(tableIndex, dateWithZeros, number, 1, ctx, collection, comment);
+    await addNewRow(tableIndex, dateWithZeros, number, 1, ctx, collection, comment);
   } else {
     if (number[0] == "-") number = number.slice(1);
-    // await addNewRow(tableIndex, dateWithZeros, number, 0, ctx, collection, comment);
+    await addNewRow(tableIndex, dateWithZeros, number, 0, ctx, collection, comment);
   }
 };
 
