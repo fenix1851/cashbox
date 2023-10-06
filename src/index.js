@@ -16,13 +16,13 @@ const { deleteRow } = require("./scripts/gSheets");
 
 //const {deleteRow} = require('./scripts/gSheets')
 
-const { MongoClient } = require("mongodb");
+//const { MongoClient } = require("mongodb");
 // or as an es module:
 // import { MongoClient } from 'mongodb'
 
 // Connection URL
-const url = "mongodb://localhost:27017";
-const client = new MongoClient(url);
+//const url = "mongodb://localhost:27017";
+//const client = new MongoClient(url);
 
 // Database Name
 const dbName = "cashbox";
@@ -52,52 +52,52 @@ const recognizeAndAdd = async (number, dateWithZeros, ctx, collection, comment) 
   }
 };
 
-const update = async (db, ctx, firstChatId, secondChatId) => {
-  const collections = await db.collections();
+//const update = async (db, ctx, firstChatId, secondChatId) => {
+  //const collections = await db.collections();
   //console.log(typeof collections)
-  for (const coll of collections) {
-    const colname = coll.namespace.split(".")[1];
-    console.log(
-      `colname: ${typeof colname} chatId1: ${typeof firstChatId} chatId2: ${typeof secondChatId}`
-    );
-    const collection = db.collection(colname);
-    const elements = await collection.find().toArray();
+  //for (const coll of collections) {
+    //const colname = coll.namespace.split(".")[1];
+    //console.log(
+      //`colname: ${typeof colname} chatId1: ${typeof firstChatId} chatId2: ${typeof secondChatId}`
+    //);
+    //const collection = db.collection(colname);
+    //const elements = await collection.find().toArray();
     //console.log(data)
-    for (const elem of elements) {
+    //for (const elem of elements) {
       // console.log("-------------------");
       // console.log(elem);
-      try {
-        await ctx.telegram.copyMessage("290561482", colname, elem.messageId);
-      } catch (e) {
-        if (e.message == "400: Bad Request: message to copy not found")
-          console.log(elem._id);
-        console.log(colname == secondChatId);
-        if (colname == firstChatId) {
-          console.log("first delete");
-          await deleteRow(0, elem.row, db, colname, elem._id);
-        } else if (colname == secondChatId) {
-          console.log("second delete");
-          await deleteRow(1, elem.row, db, colname, elem._id);
-        } else {
-          console.log("dont find such table");
-        }
-      }
-    }
-  }
+      //try {
+        //await ctx.telegram.copyMessage("290561482", colname, elem.messageId);
+      //} catch (e) {
+        //if (e.message == "400: Bad Request: message to copy not found")
+          //console.log(elem._id);
+        //console.log(colname == secondChatId);
+        //if (colname == firstChatId) {
+          //console.log("first delete");
+          //await deleteRow(0, elem.row, db, colname, elem._id);
+        //} else if (colname == secondChatId) {
+          //console.log("second delete");
+          //await deleteRow(1, elem.row, db, colname, elem._id);
+        //} else {
+          //console.log("dont find such table");
+        //}
+      //}
+    //}
+  //}
   //console.log(ctx.message.message_id);
-};
+//};
 
 const init = async (bot) => {
-  await client.connect();
-  console.log("Connected successfully to server");
-  const db = client.db(dbName);
+  //await client.connect();
+  //console.log("Connected successfully to server");
+  //const db = client.db(dbName);
   bot.start((ctx) => {
     console.log(ctx.chat)
   });
 
-  bot.command("update", (ctx) => {
-    update(db, ctx, firstChatId, secondChatId);
-  });
+  //bot.command("update", (ctx) => {
+    //update(db, ctx, firstChatId, secondChatId);
+  //});
 
   bot.on("message", async (ctx) => {
     //console.log(ctx.message.caption)
@@ -177,7 +177,7 @@ const init = async (bot) => {
           comment = buffer.slice(1);
           const messageDate = new Date(ctx.message.date * 1000);
           //console.log(ctx.message.chat.id);
-          const collection = db.collection(ctx.message.chat.id.toString());
+          const collection = 1
 
           var dateWithZeros =
             ("0" + messageDate.getDate()).slice(-2) +

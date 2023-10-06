@@ -25,26 +25,26 @@ const addNewRow = async (tableIndex, date, summ, sign,ctx, collection, comment) 
         await sheet.addRow({ Дата: date, Приход: summ, Комментарии: comment });
         let rows = await sheet.getRows();
         let rowNumber = rows[rows.length - 1]["_rowNumber"];
-        await collection.insertOne({
-          messageId: ctx.message.message_id,
-          date: date,
-          number: summ,
-          sign: sign,
-          row: rowNumber,
-          comment: comment
-        });
+       // await collection.insertOne({
+         // messageId: ctx.message.message_id,
+          //date: date,
+          //number: summ,
+          //sign: sign,
+          //row: rowNumber,
+          //comment: comment
+        //});
         ctx.reply('Приход '+summ+' зафиксирован')
     }
     else{
         await sheet.addRow({ Дата: date, Расход: summ, Комментарии: comment });
         let rows = await sheet.getRows();
         let rowNumber = rows[rows.length - 1]["_rowNumber"];
-        await collection.insertOne({
-          messageId: ctx.message.message_id,
-          date: date,
-          number: summ,
-          row: rowNumber,
-        });
+        //await collection.insertOne({
+          //messageId: ctx.message.message_id,
+          //date: date,
+          //number: summ,
+          //row: rowNumber,
+        //});
         ctx.reply("Расход " + summ + " зафиксирован");
     }
 }
@@ -65,7 +65,7 @@ const deleteRow = async (tableIndex,rowNumber, db, colname, objectId)=>{
   const cellC = sheet.getCellByA1(`C${rowNumber}`);
   const cellD = sheet.getCellByA1(`D${rowNumber}`);
 
-  const collection = db.collection(colname);
+  //const collection = db.collection(colname);
   if (
     cellA._rawData.formattedValue &&
     cellA._rawData.formattedValue != "[ДАННЫЕ УДАЛЕНЫ]"
@@ -83,14 +83,6 @@ const deleteRow = async (tableIndex,rowNumber, db, colname, objectId)=>{
     console.log(
       `error, row ${rowNumber} in ${tableIndex} table doesn't founded`
     );
-    console.log(`try to delete document with ${objectId} from db:`);
-    try {
-      const deleteResult = await collection.deleteMany({ _id: objectId });
-      console.log(deleteResult);
-      console.log(`Succes! Result: ${deleteResult}`);
-    } catch (error) {
-      console.log("sorry, deleting were not succesed");
-    }
   }
 }
 
